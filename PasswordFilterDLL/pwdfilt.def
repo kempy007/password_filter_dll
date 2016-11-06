@@ -1,0 +1,5 @@
+LIBRARY pwdfilt
+EXPORTS
+	InitializeChangeNotify
+	PasswordChangeNotify
+	PasswordFilter
