@@ -8,8 +8,10 @@
 #include <stdio.h>
 #include <string>
 
-#include <iostream>
+#include <iostream> // for cout not required in dll
  
+#include <cmath> // for entropy algo
+#include <set>
 
 #define SIZE 258
 
@@ -18,6 +20,29 @@
 
 
 using namespace std;
+
+double entropy(string& st) {
+	vector<char> stvec(st.begin(), st.end());
+	set<char> alphabet(stvec.begin(), stvec.end());
+	vector<double> freqs;
+	for (set<char>::iterator c = alphabet.begin(); c != alphabet.end(); ++c) {
+		int ctr = 0;
+		for (vector<char>::iterator s = stvec.begin(); s != stvec.end(); ++s) {
+			if (*s == *c) {
+				++ctr;
+			}
+		}
+		freqs.push_back((double)ctr / (double)stvec.size());
+	}
+	double ent = 0;
+	double ln2 = log(2);
+	for (vector<double>::iterator f = freqs.begin(); f != freqs.end(); ++f) {
+		ent += *f * log(*f) / ln2;
+	}
+	ent = -ent;
+	return ent;
+}
+
 
 
 int main()
@@ -30,8 +55,12 @@ int main()
 
 	while (running)
 	{
-		printf("please enter password or type exit to end\n");
+		printf("please enter password or type exit to end\n\n");
 		fgets(password, SIZE, stdin);
+
+		string sX(password);
+		double d_entropy = entropy(sX);
+		cout << "\nEntropy = " << d_entropy << "\n" << endl;
 
 		/* remove newline, if present */
 		i = strlen(password) - 1;
@@ -43,7 +72,7 @@ int main()
 		char c;
 		int pwsize = strlen(password);
 		//int pwsizT = 4; 
-		char *lcPassword = new char[pwsize]; // has garbage need to null the end http://google.com 
+		char *lcPassword = new char[pwsize]; // has garbage need to null the end
 		wchar_t *lcpw = new wchar_t[pwsize];
 		while (password[ix])
 		{
@@ -90,9 +119,19 @@ int main()
 		{
 			if (LCPW.find(word) != std::string::npos)
 			{
-				//printf("Found dictionary word >> %ls << \n", word); // getting garbage 
-				wcout << "***WARNING*** Found dictionary word >> " << word << " << \n" << endl;
+				if (pwsize / 2 >= word.size())
+				{
+					wcout << "---Allowed--- dictionary word >> " << word << " << Because it forms less than half of the password \n" << endl;
+				}
+				else
+				{
+					wcout << "***WARNING*** Found dictionary word >> " << word << " << \n" << endl;
+				}
 			}
+		}
+		if (d_entropy <= 3)
+		{
+			cout << "***WARNING*** Entropy is too low" << endl;
 		}
 
 		// exit check routine - not really necessary but it's here now
