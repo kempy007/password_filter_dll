@@ -11,5 +11,10 @@
 #include <tchar.h>
 
 
+#include <windows.h>
+#include <winnt.h>
+#include <ntsecapi.h>
+#include <comdef.h>
+
 
 // TODO: reference additional headers your program requires here
