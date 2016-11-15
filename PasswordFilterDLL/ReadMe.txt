@@ -68,3 +68,6 @@ using it for bad
 https://phocean.net/2013/10/02/password-stealing-using-a-password-filter.html
 
 had to switch from MDd to MTd
+
+https://blogs.msdn.microsoft.com/spatdsg/2005/12/27/debugging-lsass-oh-what-fun-it-is-to-ride/
+https://blogs.msdn.microsoft.com/alejacma/2007/11/13/how-to-debug-lsass-exe-process/

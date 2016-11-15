@@ -1,4 +1,4 @@
-#include "Banned.h"
+//#include "Banned.h"
 #include "stdafx.h"
 #include <atlbase.h>
 #include <regex>
@@ -228,6 +228,7 @@ BOOLEAN __stdcall PasswordFilter(
 	wstring ws_deobpasswlc = toloweranddeobfuscate(wstrPassword); // get just lowercase here
 
 	// do our checks here and set flags for messages/decisions later
+	int matchedword = 0;
 	for each (wstring word in wordarray)
 	{
 		if (ws_deobpasswlc.find(word) != std::string::npos)
@@ -238,17 +239,16 @@ BOOLEAN __stdcall PasswordFilter(
 			}
 			else
 			{
-				bMatch = false;
+				matchedword++;
 			}
 		}
-		else
-		{
-			bMatch = true;
-		}
 	}
-	if (d_entropy <= 3)
+	if (matchedword == 0)
 	{
-		bMatch = false;
+		if (d_entropy > 3)
+		{
+			bMatch = TRUE;
+		}
 	}
 
 	// Erase all temporary password data
