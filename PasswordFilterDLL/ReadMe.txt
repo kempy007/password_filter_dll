@@ -71,3 +71,20 @@ had to switch from MDd to MTd
 
 https://blogs.msdn.microsoft.com/spatdsg/2005/12/27/debugging-lsass-oh-what-fun-it-is-to-ride/
 https://blogs.msdn.microsoft.com/alejacma/2007/11/13/how-to-debug-lsass-exe-process/
+
+
+Remote debugging the dll, copied over from my wdk 8.1 install from C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64 to remote host c:\
+on remote host run
+
+C:\Users\Administrator>cd c:\x64
+c:\x64>dbgsrv.exe -t tcp:port=1234,password=letmeinlol
+
+on local host run
+
+C:\Program Files (x86)\Windows Kits\8.1\Debuggers\x64>windbg.exe -premote tcp:server=192.168.56.10,port=1234,password=letmeinlol -pn lsass.exe -y "C:\Users\user\AppData\Local\Temp\SymbolCache"
+
+
+.sympath
+.reload
+
+When you want to quit – make sure you use ‘qd’ to  ‘quit and detach’ so you don’t kill LSA  on the target machine.

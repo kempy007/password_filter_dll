@@ -129,6 +129,7 @@ int main()
 			v[xi] = NULL;
 			xi++;
 		}
+		bool bMatch = FALSE;
 
 		double d_entropy = entropy(ws_password); // using wstring overload now
 		cout << "\nEntropy = " << d_entropy << "\n" << endl;
@@ -140,23 +141,37 @@ int main()
 		wcout << "The deobfuscated password << " << ws_deobpasswlc << " >>\n\n" << endl;
 
 		// do our checks here and set flags for messages/decisions later
+		int matchedword = 0;
 		for each (wstring word in wordarray)
 		{
 			if (ws_deobpasswlc.find(word) != std::string::npos)
 			{
 				if (ws_deobpasswlc.size() / 2 >= word.size())
 				{
+					// allow pw
+					// bMatch = TRUE; // think this is need 
 					wcout << "---Allowed--- dictionary word >> " << word << " << Because it forms less than half of the password \n" << endl;
 				}
 				else
 				{
+					// ban pw
+					matchedword++;
 					wcout << "***WARNING*** Found dictionary word >> " << word << " << \n" << endl;
 				}
 			}
 		}
 		if (d_entropy <= 3)
 		{
+			// ban pw
 			cout << "***WARNING*** Entropy is too low" << endl;
+		}
+		if (matchedword == 0)
+		{
+			if (d_entropy > 3)
+			{
+				// allow pw
+				bMatch = TRUE;
+			}
 		}
 
 
